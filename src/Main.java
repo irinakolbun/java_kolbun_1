@@ -1,3 +1,6 @@
+import java.net.SocketOption;
+import java.sql.SQLOutput;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -6,7 +9,7 @@ public class Main {
 }
 
 
-class Plumbing {   // Model
+class Plumbing {        // Model
     private Integer idNum;
     private String kind;
     private String manufacturer;
@@ -52,6 +55,55 @@ class Plumbing {   // Model
 
     public String getModel() {
         return model;
+    }
+
+}
+
+class PlumbingView {        // View
+    public void printPlumbing(String itemName, Float itemPrice, String itemModel){
+        System.out.println("Name: " + itemName);
+        System.out.println("Price: " + itemPrice.toString());
+        System.out.println("Model: " + itemModel);
+    }
+}
+
+class PlumbingController {      // Controller
+    private Plumbing model;
+    private PlumbingView view;
+
+    public PlumbingController(Plumbing model, PlumbingView view){
+        this.model = model;
+        this.view = view;
+    }
+
+    public Integer getPlumbingId() { return model.getId(); }
+
+    public String getPlumbingKind() {
+        return model.getKind();
+    }
+
+    public String getPlumbingManufacturer() {
+        return model.getManufacturer();
+    }
+
+    public String getPlumbingName() {
+        return model.getName();
+    }
+
+    public Integer getPlumbingQuantity() {
+        return model.getQuantity();
+    }
+
+    public Float getPlumbingPrice() {
+        return model.getPrice();
+    }
+
+    public String getPlumbingModel() {
+        return model.getModel();
+    }
+
+    public void updateView(){
+        view.printPlumbing(model.getName(), model.getPrice(), model.getModel());
     }
 
 }
