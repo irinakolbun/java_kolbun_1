@@ -46,4 +46,10 @@ class Plumbing {        // Model
         return model;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%-50s   %-7s   %15s %18s %16s %n",
+                getName().substring(0, Math.min(getName().length(), 50)), getPrice(),
+                getModel(), getKind(), getManufacturer());
+    }
 }

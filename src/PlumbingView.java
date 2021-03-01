@@ -40,21 +40,4 @@ class PlumbingView {        // View
         scannerSkip();
         return res;
     }
-
-    public void printPlumbing(Plumbing plumbing){
-        System.out.printf("%-50s   %-7s   %15s %18s %16s %n",
-                plumbing.getName().substring(0, Math.min(plumbing.getName().length(), 50)),
-                plumbing.getPrice(), plumbing.getModel(), plumbing.getKind(), plumbing.getManufacturer());
-    }
-
-    public void printPlumbings(Plumbing[] plumbings) {
-        PlumbingView view = new PlumbingView();
-        System.out.println("-".repeat(119) + "-");
-        System.out.println("Name" + " ".repeat(48) + " Price " + " ".repeat(13) + " Model " + " ".repeat(10) + " Kind " + " ".repeat(10) + " Manufacturer |");
-        System.out.println("-".repeat(119) + "-");
-        for (Plumbing plumbing : plumbings) {
-            printPlumbing(plumbing);
-        }
-        System.out.println();
-    }
 }
