@@ -40,4 +40,13 @@ class PlumbingView {        // View
         scannerSkip();
         return res;
     }
+
+    void printException(RuntimeException ex) {
+        System.out.println(ex.getMessage());
+    }
+
+    void printInvalidInput() {
+        System.out.printf("\"%s\" - невірний формат вводу!%n", in.nextLine());
+    }
+
 }

@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.InputMismatchException;
 
 class PlumbingController {      // Controller
     private PlumbingView view;
@@ -25,14 +26,36 @@ class PlumbingController {      // Controller
                 case 2:
                     String manufacturer = view.manufacturerPrompt();
                     PlumbingStorage search;
-                    search = getByManufacturer(manufacturer, storage.getModels());
-                    System.out.print(search);
+                    try {
+                        search = getByManufacturer(manufacturer, storage.getModels());
+                        System.out.print(search);
+                    } catch (ItemNotFoundException ex) {
+                        view.printException(ex);
+                    }
                     break;
                 case 3:
                     String kind = view.kindPrompt();
-                    double price = view.maxPricePrompt();
-                    search = getByKindCostLessThan(kind, price, storage.getModels());
-                    System.out.print(search);
+                    double price;
+
+                    while (true) {
+                        try {
+                            price = view.maxPricePrompt();
+                            price = validatePrice(price);
+                            break;
+                        } catch (InvalidPriceException ex)
+                        {
+                            view.printException(ex);
+                        } catch (InputMismatchException ex) {
+                            view.printInvalidInput();
+                        }
+                    }
+
+                    try {
+                        search = getByKindCostLessThan(kind, price, storage.getModels());
+                        System.out.print(search);
+                    } catch (ItemNotFoundException ex) {
+                        view.printException(ex);
+                    }
                     break;
                 default:
                     break;
@@ -48,6 +71,8 @@ class PlumbingController {      // Controller
                 filtered_plumbings.add(plumbing);
             }
         }
+        if (filtered_plumbings.len() == 0)
+            throw new ItemNotFoundException();
         return filtered_plumbings;
     }
 
@@ -59,7 +84,15 @@ class PlumbingController {      // Controller
                 filtered_plumbings.add(plumbing);
             }
         }
+        if (filtered_plumbings.len() == 0)
+            throw new ItemNotFoundException();
         return filtered_plumbings;
+    }
+
+    public static double validatePrice(double price) {
+        if (price <= 0)
+            throw new InvalidPriceException();
+        return price;
     }
 
 }

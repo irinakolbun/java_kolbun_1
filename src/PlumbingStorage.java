@@ -30,11 +30,10 @@ class PlumbingStorage {
         return models;
     }
 
+    int len() {return models.length;}
+
     @Override
     public String toString() {
-        if (models.length == 0)
-            return "Не знайдено жодного виробу\n";
-
         StringBuilder ret = new StringBuilder();
         ret.append("-".repeat(120));
         ret.append('\n');
