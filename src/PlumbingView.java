@@ -54,6 +54,12 @@ class PlumbingView {        // View
         return res;
     }
 
+    boolean saveToFilePrompt() {
+        System.out.println("Зберегти результати пошуку в файл? y/n");
+        String res = in.nextLine();
+        return res.strip().equalsIgnoreCase("y");
+    }
+
     int quantityPrompt() {
         System.out.println("Введіть кількість товару: ");
         int res = in.nextInt();

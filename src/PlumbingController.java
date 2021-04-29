@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 
@@ -37,9 +38,18 @@ class PlumbingController {      // Controller
                     try {
                         search = getByManufacturer(manufacturer, storage.getModels());
                         System.out.print(search);
+                        if (view.saveToFilePrompt()) {
+                            Timestamp ts = new Timestamp(System.currentTimeMillis());
+                            try {
+                                io.writePlumbingsToFile("search_man_" + ts.toString() + ".json", search);
+                            } catch (IOException ex) {
+                                view.printException(ex);
+                            }
+                        }
                     } catch (ItemNotFoundException ex) {
                         view.printException(ex);
                     }
+
                     break;
                 case 3:
                     String kind = view.kindPrompt();
@@ -61,6 +71,14 @@ class PlumbingController {      // Controller
                     try {
                         search = getByKindCostLessThan(kind, price, storage.getModels());
                         System.out.print(search);
+                        if (view.saveToFilePrompt()) {
+                            Timestamp ts = new Timestamp(System.currentTimeMillis());
+                            try {
+                                io.writePlumbingsToFile("search_kindcost_" + ts.toString() + ".json", search);
+                            } catch (IOException ex) {
+                                view.printException(ex);
+                            }
+                        }
                     } catch (ItemNotFoundException ex) {
                         view.printException(ex);
                     }
