@@ -6,6 +6,7 @@ class PlumbingView {        // View
             + "\n1 Вивести усі доступні товари."
             + "\n2 Отримати список сантехніки заданої фірми."
             + "\n3 Отримати список сантехніки заданого виду і менше вказаної ціни."
+            + "\n4 Додати товар."
             + "\n0 Вийти з програми. \n";
 
     PlumbingView() {
@@ -41,7 +42,30 @@ class PlumbingView {        // View
         return res;
     }
 
-    void printException(RuntimeException ex) {
+    String modelPrompt() {
+        System.out.println("Введіть модель товару: ");
+        return in.nextLine();
+    }
+
+    double pricePrompt() {
+        System.out.println("Введіть ціну товару: ");
+        double res = in.nextDouble();
+        scannerSkip();
+        return res;
+    }
+
+    int quantityPrompt() {
+        System.out.println("Введіть кількість товару: ");
+        int res = in.nextInt();
+        return res;
+    }
+
+    String namePrompt() {
+        System.out.println("Введіть назву товару: ");
+        return in.nextLine();
+    }
+
+    void printException(Exception ex) {
         System.out.println(ex.getMessage());
     }
 

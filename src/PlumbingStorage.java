@@ -2,6 +2,7 @@ import java.util.Arrays;
 
 class PlumbingStorage {
     private Plumbing[] models;
+    private int nextId = 0;
 
     PlumbingStorage () {
         models = new Plumbing[0];
@@ -19,6 +20,7 @@ class PlumbingStorage {
         models[7] = new Plumbing(7, "pipe", "FloPlast", "FLOPLAST SOLVENT WELD PIPES WHITE 50MM X 3M", 100, 10.68, "88188");
         models[8] = new Plumbing(8, "toilet", "AuthenticPlumbing", "TOILET-TO-GO CLOSE-COUPLED TOILET", 0, 300.99, "0A312");
         models[9] = new Plumbing(9, "toilet", "CASSELLIE", "MONTEGO COMFORT HEIGHT CLOSE-COUPLED TOILET DUAL-FLUSH", 0, 129.99, "892GV");
+        nextId = 10;
     }
 
     void add(Plumbing plumbing) {
@@ -48,5 +50,9 @@ class PlumbingStorage {
             ret.append(plumbing.toString());
         }
         return ret.toString();
+    }
+
+    int getNextId() {
+        return nextId++;
     }
 }
