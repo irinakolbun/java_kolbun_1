@@ -1,3 +1,4 @@
+import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -7,6 +8,7 @@ class PlumbingController {      // Controller
     private PlumbingView view;
     private PlumbingStorage storage;
     private FileIO io;
+    final static Logger logger = Logger.getLogger(PlumbingController.class);
 
     public PlumbingController() {
         this.storage = new PlumbingStorage();
@@ -14,6 +16,7 @@ class PlumbingController {      // Controller
         try {
             storage = io.readPlumbingsFromFile("storage.json");
         } catch (IOException e) {
+            logger.warn("Failed to read plumbings from file storade.json, falling back to static items list");
             // fallback to static items list
             storage.getModelsFromDatabase();
         }
@@ -27,7 +30,7 @@ class PlumbingController {      // Controller
             do {
                 option = view.menuPrompt();
             } while(option < 0 || option > 5);
-
+            logger.debug("Option " + String.valueOf(option) + " selected by user");
             switch(option) {
                 case 1:
                     System.out.print(storage);
@@ -43,6 +46,7 @@ class PlumbingController {      // Controller
                             try {
                                 io.writePlumbingsToFile("search_man_" + ts.toString() + ".json", search);
                             } catch (IOException ex) {
+                                logger.error("Failed to write plumbings to file search_man_" + ts.toString() + ".json");
                                 view.printException(ex);
                             }
                         }
@@ -76,6 +80,7 @@ class PlumbingController {      // Controller
                             try {
                                 io.writePlumbingsToFile("search_kindcost_" + ts.toString() + ".json", search);
                             } catch (IOException ex) {
+                                logger.error("Failed to write plumbings to file search_kindcost_" + ts.toString() + ".json");
                                 view.printException(ex);
                             }
                         }
@@ -128,8 +133,10 @@ class PlumbingController {      // Controller
         try {
             io.writePlumbingsToFile("storage.json", storage);
         } catch (IOException ex) {
+            logger.error("Failed to write plumbings to file storage.json");
             view.printException(ex);
         }
+        logger.info("Exiting program");
     }
 
     public static PlumbingStorage getByManufacturer(String manufacturer, Plumbing[] plumbings) {
