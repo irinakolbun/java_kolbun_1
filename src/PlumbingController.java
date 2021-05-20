@@ -16,7 +16,7 @@ class PlumbingController {      // Controller
         try {
             storage = io.readPlumbingsFromFile("storage.json");
         } catch (IOException e) {
-            logger.warn("Failed to read plumbings from file storade.json, falling back to static items list");
+            logger.warn("Failed to read plumbings from file storage.json, falling back to static items list");
             // fallback to static items list
             storage.getModelsFromDatabase();
         }
@@ -30,10 +30,11 @@ class PlumbingController {      // Controller
             do {
                 option = view.menuPrompt();
             } while(option < 0 || option > 5);
-            logger.debug("Option " + String.valueOf(option) + " selected by user");
+            logger.info("Option " + String.valueOf(option) + " selected by user");
             switch(option) {
                 case 1:
                     System.out.print(storage);
+                    logger.info("All items printed successfully");
                     break;
                 case 2:
                     String manufacturer = view.manufacturerPrompt();
@@ -41,16 +42,20 @@ class PlumbingController {      // Controller
                     try {
                         search = getByManufacturer(manufacturer, storage.getModels());
                         System.out.print(search);
+                        logger.info("Search results printed");
+                        logger.debug("\n" + search);
                         if (view.saveToFilePrompt()) {
                             Timestamp ts = new Timestamp(System.currentTimeMillis());
                             try {
                                 io.writePlumbingsToFile("search_man_" + ts.toString() + ".json", search);
+                                logger.info("Search results written to file successfully");
                             } catch (IOException ex) {
                                 logger.error("Failed to write plumbings to file search_man_" + ts.toString() + ".json");
                                 view.printException(ex);
                             }
                         }
                     } catch (ItemNotFoundException ex) {
+                        logger.debug("No items found");
                         view.printException(ex);
                     }
 
@@ -63,10 +68,12 @@ class PlumbingController {      // Controller
                         try {
                             price = view.maxPricePrompt();
                             price = validatePrice(price);
+                            logger.debug("User entered: " + price + " price");
                             break;
                         } catch (InvalidPriceException ex)
                         {
                             view.printException(ex);
+                            logger.debug("Invalid data format");
                         } catch (InputMismatchException ex) {
                             view.printInvalidInput();
                         }
